@@ -1,91 +1,53 @@
 import keras
-import json
-import random
 import numpy as np
 
-from keras.datasets import mnist
-from keras.models import Sequential, load_model
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-
-import matplotlib.pyplot as plt
-
-from helper import get_model, load_data, create_validation_split, create_tasks, test_image, writeToJson
-from task_manager import TaskManager
+from helper import get_model, load_data
+from model_trainer import ModelTrainer
+from WeightedTaskSyllabus import WeightedTaskSyllabus
+from difficulty_sorters import emnist_difficulty_sort
 
 #Consts
 digits_classes = 10
 balanced_classes = 47
 by_class_classes = 62
 classes = balanced_classes
+
 task_count = 10
-
-validation_split = 0.2
-epochs = 5
-batch_size = 128
+difficulty_sections = 15
 weightings = { "bw" : 0.15, "cw" : 0.7, "fw" : 0.15}
-results_file_name = "BalancedFull"
+model_name = "init_weights0.h5"
 
-
-model = get_model(0)
+#Loading model and data
+model = get_model(model_name)
 data_collection = load_data('balanced')
+data_collection['test_y'] = keras.utils.to_categorical(data_collection['test_y'])
 
-split = create_validation_split(
-    data_collection['training_data'], data_collection['training_labels'], validation_split
+#Setting up a syllabus
+syl = WeightedTaskSyllabus(
+    data=(data_collection['x'], data_collection['y']),
+    weightings=weightings,
+    validation_split=0.2,
+    difficulty_sorter=emnist_difficulty_sort(balanced_classes, difficulty_sections),
+    task_count=task_count,
+    pre_run=False
 )
 
-training_data = split['training_data']
-training_labels = split['training_labels']
+#Create a model trainer with our syllabus
+trainer = ModelTrainer(model, syl, verbose_level=1)
 
-testing_data = np.asarray(data_collection['testing_data'])
-testing_labels = data_collection['testing_labels']
-testing_y_vectors = keras.utils.to_categorical(testing_labels, classes)
+#Create a callback for our model trainer and pass it in
+def preprocess_data(data, syllabus, model):
+    data['x'] = np.asarray(data['x'])
+    data['y'] = keras.utils.to_categorical(data['y'], classes)
+    data['val_x'] = np.asarray(data['val_x'])
+    data['val_y'] = keras.utils.to_categorical(data['val_y'], classes)
 
-validation_data = np.asarray(split['validation_data'])
-validation_labels = split['validation_labels']
-validation_y_vectors = keras.utils.to_categorical(validation_labels, classes)
+trainer.on_task_start(preprocess_data)
 
-dummy = TaskManager(training_data,
-    training_labels,
-    classes=classes,
-    task_count=task_count,
-    weightings=weightings)
+#Use the model trainer
+trainer.train()
 
-validation_scores = {
-    "samples_looked_at" : [],
-    "validation_loss" : [],
-    "validation_accuracy" : []
-}
-evaluation_scores = {
-    "samples_looked_at" : [],
-    "evaluation_loss" : [],
-    "evaluation_accuracy" : []
-}
-
-while not dummy.is_finished():
-    task, labels = dummy.get_current_task_samples()
-    labels = keras.utils.to_categorical(labels, classes)
-    validation_score = model.fit(
-        x=task,
-        y=labels,
-        batch_size=batch_size,
-        epochs=1,
-        verbose=1,
-        shuffle=True,
-        validation_data=(validation_data, validation_y_vectors)
-    )
-    validation_scores['samples_looked_at'].append(dummy.samples_looked_at)
-    validation_scores['validation_loss'].append(validation_score.history['val_loss'][-1])
-    validation_scores['validation_accuracy'].append(validation_score.history['val_acc'][-1])
-    dummy.submit_model_score(validation_score)
-
-    evaluation_score = model.evaluate(testing_data, testing_y_vectors, verbose=1)
-    evaluation_scores['samples_looked_at'].append(dummy.samples_looked_at)
-    evaluation_scores['evaluation_loss'].append(evaluation_score[0])
-    evaluation_scores['evaluation_accuracy'].append(evaluation_score[1])
-
-results = {
-    'validation' : validation_scores,
-    'evaluation' : evaluation_scores
-}
-writeToJson('./results/' + results_file_name, results)
+trainer.model.save("./models/models_task_based_model_trained_once")
+#evaluate
+# evaluation_score = model.evaluate(data_collection['test_x'], data_collection['test_y'], verbose=1)
+# print(evaluation_score)

@@ -10,7 +10,7 @@ import numpy as np
 #
 #   returns:
 #       np array of all the images in the file
-def load_idx_images(filename):
+def load_idx_images(filename, amount):
     print("Reading in " + filename)
     image_file = open(filename, 'rb')
     image_file.seek(0)
@@ -20,6 +20,9 @@ def load_idx_images(filename):
     img_count = st.unpack('>I', image_file.read(4))[0]
     rows = st.unpack('>I', image_file.read(4))[0]
     columns =st.unpack('>I', image_file.read(4))[0]
+
+    if amount > 0:
+        img_count = amount
 
     bytes_per_pixel = 1 #should use magic number to work this out
     channels_per_pixel = 1; #Number of channels (1 for greyscale)
@@ -44,7 +47,7 @@ def load_idx_images(filename):
 #
 #   returns:
 #       np array of all the labels in the file
-def load_idx_labels(filename):
+def load_idx_labels(filename, amount):
     print("Reading in " + filename)
     label_file = open(filename, 'rb')
     label_file.seek(0)
@@ -52,9 +55,12 @@ def load_idx_labels(filename):
     #https://docs.python.org/2/library/struct.html
     magic = st.unpack('>4B', label_file.read(4))
     label_count = st.unpack('>I', label_file.read(4))[0]
+
+    if amount > 0:
+        label_count = amount
+
     bytes_per_label = 1 #should use magic number to work this out
     total_bytes = label_count*bytes_per_label
-
 
     labels = np.zeros(label_count)
     label_bytes = st.unpack('>' + 'B'*total_bytes, label_file.read(total_bytes))

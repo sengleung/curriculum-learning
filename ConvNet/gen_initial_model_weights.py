@@ -3,6 +3,8 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
+"""Just a file to generate some model weights, keeps things more consistent to
+use same weights"""
 
 digits_classes = 10
 balanced_classes = 47

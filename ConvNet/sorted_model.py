@@ -2,6 +2,7 @@ import keras
 import json
 import random
 import numpy as np
+from ml_util import *
 
 from keras.datasets import mnist
 from keras.models import Sequential, load_model
@@ -10,7 +11,8 @@ from keras.layers import Conv2D, MaxPooling2D
 
 import matplotlib.pyplot as plt
 
-from helper import get_model, load_data, create_validation_split, create_tasks, writeToJson
+from helper import get_model, load_data, writeToJson
+from difficulty_sorters import emnist_difficulty_sort
 
 #Consts
 digits_classes = 10
@@ -19,7 +21,7 @@ by_class_classes = 62
 classes = balanced_classes
 task_count = 10
 
-validation_split = 0.2
+validation_split_percent = 0.2
 epochs = 1
 batch_size = 128
 
@@ -27,30 +29,21 @@ batch_size = 128
 model = get_model(0)
 data_collection = load_data('balanced')
 
-split = create_validation_split(
-    data_collection['training_data'], data_collection['training_labels'], validation_split
-)
+zipped_data = list(zip(data_collection['x'], data_collection['y']))
+validation_split, training_split = split(zipped_data, validation_split_percent)
+data_collection['x'], data_collection['y'] = unzip(training_split)
+data_collection['val_x'], data_collection['val_y'] = unzip(validation_split)
 
-tasks = create_tasks(
-    data=np.asarray(split['training_data']),
-    labels=split['training_labels'],
-    classes=classes,
-    task_count=task_count,
-    randomize_each_task=True
-)
-#Flatten all tasks into one list
-training_labelled_data = [data_point for task in tasks for data_point in task]
-training_labels, training_data = zip(*training_labelled_data)
-
-training_data = np.asarray(training_data)
+sorted_data = emnist_difficulty_sort(classes,15)(data_collection['x'], data_collection['y'])
+training_data, training_labels = unzip(sorted_data)
 training_y_vectors = keras.utils.to_categorical(training_labels, classes)
 
-testing_data = np.asarray(data_collection['testing_data'])
-testing_labels = data_collection['testing_labels']
+testing_data = np.asarray(data_collection['test_x'])
+testing_labels = data_collection['test_y']
 testing_y_vectors = keras.utils.to_categorical(testing_labels, classes)
 
-validation_data = np.asarray(split['validation_data'])
-validation_labels = split['validation_labels']
+validation_data = np.asarray(data_collection['val_x'])
+validation_labels = data_collection['val_y']
 validation_y_vectors = keras.utils.to_categorical(validation_labels, classes)
 
 validation_scores = {
