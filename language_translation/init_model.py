@@ -1,8 +1,5 @@
 import keras
 import numpy as np
-
-from order_data import org_data
-from prep_model import get_model
 from model_trainer import ModelTrainer
 from WeightedTaskSyllabus import WeightedTaskSyllabus
 from prep_model import get_model
@@ -19,12 +16,14 @@ weight_file = "init_weights0.h5"
 model = get_model(weight_file)
 x, y, all_pairs = get_data()
 test_pairs, training_pairs = split_data(x, y)
+# print("tp[0] = ", training_pairs[:,0])
+# print("tp[1] =", training_pairs[:,1])
 
 #Setting up a syllabus
 syl = WeightedTaskSyllabus(
-    data=(training_pairs[0], training_pairs[1]),
+    data=(training_pairs[:,0], training_pairs[:,1]),
     weightings=weightings,
-    validation_split=0.00069,
+    validation_split=0.01,
     difficulty_sorter=sort_data,
     task_count=task_count,
     pre_run=False
@@ -42,6 +41,7 @@ trainer.on_task_start(preprocess_data)
 #Use the model trainer
 trainer.train()
 
+print("model saved")
 trainer.model.save("./models/trained_model")
 #evaluate
 # evaluation_score = model.evaluate(data_collection['test_x'], data_collection['test_y'], verbose=1)

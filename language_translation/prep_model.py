@@ -40,24 +40,23 @@ def define_model(src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units):
 
 ### <---- main function ---->####
 def get_model(weight_id):
-    clean_x, clean_y, all_pairs = get_data()
+	clean_x, clean_y, all_pairs = get_data()
 
-    ## PREP MODEL TOKENIZER
+	## PREP MODEL TOKENIZER
 
-    # prep english tokeniser
-    x_tokenizer = create_tokenizer(clean_x)
-    x_vocab_size = len(x_tokenizer.word_index) +1
-    x_length = max_length(clean_x)
-    # prep french tokeniser
-    y_tokenizer = create_tokenizer(clean_y)
-    y_vocab_size = len(fr_tokenizer.word_index) +1
-    y_length = max_length(clean_y)
+	# prep english tokeniser
+	x_tokenizer = create_tokenizer(clean_x)
+	x_vocab_size = len(x_tokenizer.word_index) +1
+	x_length = max_length(clean_x)
+	# prep french tokeniser
+	y_tokenizer = create_tokenizer(clean_y)
+	y_vocab_size = len(y_tokenizer.word_index) +1
+	y_length = max_length(clean_y)
 
-    ## DEFINE MODEL
+	## DEFINE MODEL
 
-    # define model
-    model = define_model(x_vocab_size, y_vocab_size, x_length, y_length, 256)
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
-	model.load_weights('./model_weights/weights' + weight_id)
-
-    return model
+	# define model
+	model = define_model(x_vocab_size, y_vocab_size, x_length, y_length, 256)
+	model.compile(optimizer='adam', loss='categorical_crossentropy')
+	model.load_weights('./model_weights/weights/' + weight_id)
+	return model

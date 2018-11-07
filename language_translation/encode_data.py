@@ -14,6 +14,7 @@ from keras.layers import TimeDistributed
 from keras.layers import Dense
 from keras.callbacks import ModelCheckpoint
 from pickle import load
+from organise_data import get_data
 
 # fit a tokenizer
 # map words to integers (needed for modelling)
@@ -51,29 +52,30 @@ def encode_output(sequences, vocab_size):
 
 def language_translation_encode_data(train_x, train_y, test_x, test_y):
     ### switch parameters to reverse translation
-    clean_x = all_pairs[:,0]
-    clean_y = all_pairs[:,1]
+	clean_x, clean_y, clean_pairs = get_data()
+    # clean_x = all_pairs[:,0]
+    # clean_y = all_pairs[:,1]
 
     ## PREP MODEL TOKENIZER
 
-    # prep english tokeniser
-    x_tokenizer = create_tokenizer(clean_x)
-    x_vocab_size = len(x_tokenizer.word_index) +1
-    x_length = max_length(clean_x)
-    # prep french tokeniser
-    y_tokenizer = create_tokenizer(clean_y)
-    y_vocab_size = len(fr_tokenizer.word_index) +1
-    y_length = max_length(clean_y)
+	# prep english tokeniser
+	x_tokenizer = create_tokenizer(clean_x)
+	x_vocab_size = len(x_tokenizer.word_index) +1
+	x_length = max_length(clean_x)
+	# prep french tokeniser
+	y_tokenizer = create_tokenizer(clean_y)
+	y_vocab_size = len(y_tokenizer.word_index) +1
+	y_length = max_length(clean_y)
 
 
     ## PREP TRAINING DATA
 
-    # prepare training data
-    trainX = encode_sequences(x_tokenizer, x_length, train_x)
-    trainY = encode_sequences(y_tokenizer, y_length, train_y)
-    trainY = encode_output(trainY, y_vocab_size)
-    # prepare validation data
-    testX = encode_sequences(x_tokenizer, x_length, test_x)
-    testY = encode_sequences(y_tokenizer, y_length, test_y)
-    testY = encode_output(testY, y_vocab_size)
-    return trainX, trainY, testX, testY
+	# prepare training data
+	trainX = encode_sequences(x_tokenizer, x_length, train_x)
+	trainY = encode_sequences(y_tokenizer, y_length, train_y)
+	trainY = encode_output(trainY, y_vocab_size)
+	# prepare validation data
+	testX = encode_sequences(x_tokenizer, x_length, test_x)
+	testY = encode_sequences(y_tokenizer, y_length, test_y)
+	testY = encode_output(testY, y_vocab_size)
+	return trainX, trainY, testX, testY

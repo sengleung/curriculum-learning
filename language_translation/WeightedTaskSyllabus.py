@@ -86,6 +86,7 @@ class WeightedTaskSyllabus:
 
     def _task(self, task_index):
         """Returns a certain task"""
+        print("current_task", task_index)
         return self.tasks[task_index]
 
     def _sample(self, task_index, sample_index):
@@ -107,7 +108,7 @@ class WeightedTaskSyllabus:
         data = difficulty_sorter(x,y) #given x,y -> return [(x,y) , (x,y)]
         tiered_data = chunk(data, task_count) #chunk data into N chunks
         tasks = list()
-
+        print(tiered_data[0])
         if self.verbose_level == 1:
             print("Task weightings : ")
 

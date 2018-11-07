@@ -12,7 +12,8 @@ def sample(data, percent, removal=False):
         random.shuffle(data)
         return split(data, percent)
     else:
-        return random.sample(data, int(math.ceil(len(data)*percent))), None
+        return random.sample(list(data), int(math.ceil(len(data)*percent)))
+        ####HAD to add list() around data as it was an array and random.sample needs list as first argument
 
 def chunk(data, chunks):
     chunked_data = list()
