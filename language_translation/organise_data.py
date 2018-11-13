@@ -28,10 +28,12 @@ def split_data(x, y):
 	temp_cp = clean_pairs
 	## Divide data into test and sample data
 	test_pairs, training_pairs = sample(temp_cp, 0.01, True)
+	print("Test sample = ", test_pairs.shape, "pairs")
+	print("Training sample = ", training_pairs.shape, "pairs")
 	return test_pairs, training_pairs
 
 
-## sort dataset into test and training data
+## sort dataset based on average length of bilinugal pair
 def sort_data(x, y):
 	training_pairs = np.column_stack((x, y))
 

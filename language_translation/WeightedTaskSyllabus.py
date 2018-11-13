@@ -108,7 +108,7 @@ class WeightedTaskSyllabus:
         data = difficulty_sorter(x,y) #given x,y -> return [(x,y) , (x,y)]
         tiered_data = chunk(data, task_count) #chunk data into N chunks
         tasks = list()
-        print(tiered_data[0])
+        ##print(tiered_data[0])
         if self.verbose_level == 1:
             print("Task weightings : ")
 
