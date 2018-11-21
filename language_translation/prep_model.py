@@ -48,11 +48,12 @@ def get_model(weight_id):
 	x_tokenizer = create_tokenizer(clean_x)
 	x_vocab_size = len(x_tokenizer.word_index) +1
 	x_length = max_length(clean_x)
+	print("French length=", x_length)
 	# prep french tokeniser
 	y_tokenizer = create_tokenizer(clean_y)
 	y_vocab_size = len(y_tokenizer.word_index) +1
 	y_length = max_length(clean_y)
-
+	print("English length=", y_length)
 	## DEFINE MODEL
 
 	# define model

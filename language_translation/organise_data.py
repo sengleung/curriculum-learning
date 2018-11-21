@@ -14,12 +14,12 @@ def load_clean_sentences(filename):
 def get_data():
 	clean_english = load_clean_sentences('clean_data/data/clean_english.pkl')
 	clean_french = load_clean_sentences('clean_data/data/clean_french.pkl')
-	clean_pairs = np.column_stack((clean_english,clean_french))
+	clean_pairs = np.column_stack((clean_french,clean_english))
 	### local test
-	clean_english = clean_english[:1000]
-	clean_french = clean_french[:1000]
-	clean_pairs = clean_pairs[:1000]
-	return clean_english, clean_french, clean_pairs
+	clean_english = clean_english[:100]
+	clean_french = clean_french[:100]
+	clean_pairs = clean_pairs[:100]
+	return clean_french, clean_english, clean_pairs
 
 
 ## split dataset into test and training data
@@ -41,6 +41,8 @@ def sort_data(x, y):
 	tp_list = list(training_pairs)
 	tp_list.sort(key=(lambda z: (len(z[0])+len(z[1]))/2))
 	sorted_training_pairs = array(tp_list)
+
+	# format for syllabus
 	sorted_training_tuples =[]
 	for i in range(0,len(sorted_training_pairs)):
 		sorted_training_tuples.append((sorted_training_pairs[i][0], sorted_training_pairs[i][1]))

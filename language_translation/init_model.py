@@ -5,6 +5,7 @@ from WeightedTaskSyllabus import WeightedTaskSyllabus
 from prep_model import get_model
 from organise_data import get_data, sort_data, split_data
 from encode_data import language_translation_encode_data
+from eval_model import eval_model
 #Consts
 
 task_count = 10
@@ -46,3 +47,5 @@ trainer.model.save("./models/trained_model")
 #evaluate
 # evaluation_score = model.evaluate(data_collection['test_x'], data_collection['test_y'], verbose=1)
 # print(evaluation_score)
+print(all_pairs.shape)
+#eval_model(test_pairs, training_pairs, all_pairs)
