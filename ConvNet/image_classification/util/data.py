@@ -37,3 +37,6 @@ def tag(items, tag):
 
 def to_categorical(labels, classes):
     return keras.utils.to_categorical(labels, classes)
+
+def prep(x, y, classes):
+    return np.asarray(x), to_categorical(y, classes)

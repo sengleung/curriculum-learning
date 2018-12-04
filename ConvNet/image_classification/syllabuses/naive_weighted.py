@@ -23,7 +23,6 @@ class NaiveWeightedSyllabus:
         }
         xs, ys = self._create_tasks(self.data['train_x'], self.data['train_y'],
                                         task_amount, weightings)
-        print(ys)
         self.tasks = {
             'x' : xs,
             'y' : ys,
