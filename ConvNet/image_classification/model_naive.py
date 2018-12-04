@@ -8,6 +8,7 @@ import numpy as np
 
 setname = 'balanced'
 model_ID = 0
+model_name = "naive"
 task_amount = 10
 
 #Load data and model
@@ -35,10 +36,16 @@ syllabus = NaiveSyllabus(
 
 trainer = ModelTrainer(
     model,
-    syllabus
+    syllabus,
+    on_task_end=None,
+    on_task_start=None
 )
 
+#Train
 trainer.train()
+
+#Save trained model
+model_util.save(model, model_name, model_ID)
 
 
 """

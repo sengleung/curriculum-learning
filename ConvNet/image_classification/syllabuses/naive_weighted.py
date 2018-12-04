@@ -12,8 +12,7 @@ class NaiveWeightedSyllabus:
         on_task_end=None,
         epochs=1,
         resample_each_epoch=True,
-        batch_size=128,
-        verbose_level=1):
+        batch_size=128):
         """Assumes data is presorted"""
         self.data = {
             'train_x' : training_data[0],
@@ -33,10 +32,7 @@ class NaiveWeightedSyllabus:
         self.current_task_index = 0
         self.current_epoch = 0
         self._batch_size = batch_size
-        self.verbose_level = verbose_level
         self._preprocess_data = preprocess_data
-        self._on_task_start = on_task_start
-        self._on_task_end = on_task_end
 
     def training_complete(self):
         return self._is_all_epochs_complete()
@@ -51,37 +47,19 @@ class NaiveWeightedSyllabus:
                 x, y, val_x, val_y = self._preprocess_data(x, y, val_x, val_y)
         return x, y, val_x, val_y
 
-    def task_starting(self, x, y, val_x, val_y):
-        self._handle_on_task_start(x, y, val_x, val_y)
+    def task_starting(self):
+        #Nothing
+        return
 
     def task_finished(self, history, model):
         #If current epoch complete, reset task index and progress to next epoch
         self.current_task_index += 1
-        self._handle_on_task_end(history)
         if self.is_current_epoch_complete():
             self.current_epoch += 1
             self.current_task_index = 0
 
     def is_current_epoch_complete(self):
         return self.current_task_index >= self.task_amount
-
-    def on_task_start(self, function):
-        self._on_task_start = function
-
-
-    def on_task_end(self, function):
-        self._on_task_end = function
-
-    def preprocess_data(self,function):
-        self._preprocess_data = function
-
-    def _handle_on_task_start(self, x, y, val_x, val_y):
-        if self._on_task_start:
-            self._on_task_start(x, y, val_x, val_y)
-
-    def _handle_on_task_end(self, score):
-        if self._on_task_end:
-            self._on_task_end(score)
 
     def _get_task(self, index):
         return self.tasks['x'][index], self.tasks['y'][index]
