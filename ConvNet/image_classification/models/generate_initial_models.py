@@ -1,19 +1,19 @@
 import keras
 
-import util.emnist as emnist
-import util.model as model_util
-
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
-setname = 'balanced'
-dataset = emnist.sets[setname]
-classes = dataset['classes']
 model_amounts = 5
+categorical_classes = 47
 
-filepath = './'
-filebase = 'untrained_'
+filepath = './untrained/'
+filebase = 'model_'
+
+#Define a metric to see if one of top 2 predictions are correct (5 vs s, l vs i)
+#//https://github.com/keras-team/keras/issues/8102
+def top_2_accuracy(y_true, y_pred):
+    return keras.metrics.top_k_categorical_accuracy(y_true, y_pred, k=2)
 
 for i in range(0, model_amounts):
 
@@ -28,15 +28,18 @@ for i in range(0, model_amounts):
     model.add(Flatten())
     model.add(Dense(128, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(classes, activation='softmax'))
+    model.add(Dense(categorical_classes, activation='softmax'))
 
     #Compile our model
-    model.compile(loss=keras.losses.categorical_crossentropy,
-          optimizer=keras.optimizers.Adadelta(),
-          metrics=['accuracy'])
+    model.compile(
+        loss=keras.losses.categorical_crossentropy,
+         optimizer=keras.optimizers.Adadelta(),
+         metrics=[keras.metrics.categorical_accuracy, top_2_accuracy]
+    )
 
     #Save our i'th model
-    model_util.save(model, 'untrained', i)
+    uri = filepath + filebase
+    model.save(filepath + filebase + str(i) + '.h5')
 
 """
 Notes:
