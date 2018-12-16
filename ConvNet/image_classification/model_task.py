@@ -1,7 +1,7 @@
 import json
 import numpy as np
 
-from syllabuses.naive_weighted import NaiveWeightedSyllabus
+from syllabus import Syllabus
 
 import util.emnist as emnist
 import util.data as data_util
@@ -53,7 +53,7 @@ for model_config in model_configs:
     test_x, test_y = data_util.prep(data['test_x'], data['test_y'], classes)
 
     #Set up syllabus which handles splitting into tasks
-    syllabus = NaiveWeightedSyllabus(
+    syllabus = Syllabus(
         training_data =(x,y),
         epochs=epochs,
         task_amount=task_count,

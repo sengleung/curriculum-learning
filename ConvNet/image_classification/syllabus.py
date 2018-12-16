@@ -2,7 +2,7 @@ import random
 import numpy as np
 import util.data as data_util
 
-class NaiveWeightedSyllabus:
+class Syllabus:
     """Trains a model 1 task at a time,
     including weighted samples from other tasks"""
 
