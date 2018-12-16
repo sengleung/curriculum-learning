@@ -42,11 +42,10 @@ for task_count in task_counts_to_compare_to:
         #reprocess the data, including resorting
         data, classes = emnist.get(balanced_set, amount=1000)
         x, y, val_x, val_y = data_util.validation_split(data['x'], data['y'], validation_split)
-        x, y = emnist.mean_sort(x, y, classes, 5)
+        x, y = emnist.mean_sort(x, y, classes, task_count)
 
         #Convert data to be used in model
         x, y = data_util.prep(x, y, classes)
-
         val_x, val_y = data_util.prep(val_x, val_y, classes)
         test_x, test_y = data_util.prep(data['test_x'], data['test_y'], classes)
 

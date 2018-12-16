@@ -6,52 +6,26 @@ class NaiveWeightedSyllabus:
     """Trains a model 1 task at a time,
     including weighted samples from other tasks"""
 
-    def __init__(self, training_data, task_amount, validation_data, weightings,
-        preprocess_data=None,
-        on_task_start=None,
-        on_task_end=None,
-        epochs=1,
-        resample_each_epoch=True,
-        batch_size=128):
+    def __init__(self, training_data, task_amount, weightings, epochs):
         """Assumes data is presorted"""
-        self.data = {
-            'train_x' : training_data[0],
-            'train_y' : training_data[1],
-            'validation_x' : validation_data[0],
-            'validation_y' : validation_data[1]
-        }
-        xs, ys = self._create_tasks(self.data['train_x'], self.data['train_y'],
-                                        task_amount, weightings)
+        xs, ys = self._create_tasks(training_data[0], training_data[1], task_amount, weightings)
         self.tasks = {
             'x' : xs,
             'y' : ys,
-            'length' : task_amount
         }
         self.epochs = epochs
         self.task_amount = task_amount
         self.current_task_index = 0
         self.current_epoch = 0
-        self._batch_size = batch_size
-        self._preprocess_data = preprocess_data
 
     def training_complete(self):
         return self._is_all_epochs_complete()
 
-    def batch_size(self):
-        return self._batch_size
-
     def next(self):
         x, y = self._get_task(self.current_task_index)
-        val_x, val_y = self.data['validation_x'], self.data['validation_y']
-        if self._preprocess_data: #If _preprocess_data callback is set
-                x, y, val_x, val_y = self._preprocess_data(x, y, val_x, val_y)
-        return x, y, val_x, val_y
+        return x, y
 
-    def task_starting(self):
-        #Nothing
-        return
-
-    def task_finished(self, history, model):
+    def task_finished(self):
         #If current epoch complete, reset task index and progress to next epoch
         self.current_task_index += 1
         if self.is_current_epoch_complete():
@@ -72,10 +46,11 @@ class NaiveWeightedSyllabus:
         tasks_y = []
         xy = list(zip(x,y))
         chunks = data_util.chunk(xy, task_amount)
+        print("--Task Distributions--")
         for task_index in range(0, task_amount):
-            cw = weightings['cw']
-            fw = weightings['fw']
-            bw = weightings['bw']
+            cw = weightings['Dc']
+            fw = weightings['Df']
+            bw = weightings['Dp']
 
             back_weights = []
             forward_weights = []

@@ -105,7 +105,7 @@ def mean_sort(xs, ys, classes, sections, shuffle_sections=True):
 #   returns:
 #       np array of all the images in the file
 def load_idx_images(filename, amount):
-    print("Reading in " + filename)
+    #print("Reading in " + filename)
     image_file = open(filename, 'rb')
     image_file.seek(0)
 
@@ -124,14 +124,14 @@ def load_idx_images(filename, amount):
 
     images = np.zeros( (img_count, rows, columns, channels_per_pixel) )
 
-    print("Unpacking " + str(total_bytes) + " bytes ")
+    #print("Unpacking " + str(total_bytes) + " bytes ")
     image_bytes = st.unpack('>' + 'B'*total_bytes, image_file.read(total_bytes))
 
     #read in and correct sideways images, probably a way to read in correctly
-    print("Reshaping")
+    #print("Reshaping")
     images = np.asarray(image_bytes).astype(np.float16).reshape((img_count, rows, columns, channels_per_pixel))
     images /= 255
-    print("Rotating images")
+    #print("Rotating images")
     images = np.transpose(images, (0,2,1,3))
     return images
 
@@ -142,7 +142,7 @@ def load_idx_images(filename, amount):
 #   returns:
 #       np array of all the labels in the file
 def load_idx_labels(filename, amount):
-    print("Reading in " + filename)
+    #print("Reading in " + filename)
     label_file = open(filename, 'rb')
     label_file.seek(0)
 
@@ -158,7 +158,7 @@ def load_idx_labels(filename, amount):
 
     labels = np.zeros(label_count)
     label_bytes = st.unpack('>' + 'B'*total_bytes, label_file.read(total_bytes))
-    print("Unpacking labels")
+    #print("Unpacking labels")
     labels = np.asarray(label_bytes) #probably has to be considered based on byte size
 
     return labels
