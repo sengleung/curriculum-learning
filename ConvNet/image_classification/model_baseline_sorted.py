@@ -4,10 +4,11 @@ import numpy as np
 import util.emnist as emnist
 import util.data as data_util
 import util.model as model_util
+import util.plot as plot_util
 import results.results as results_util
 
 """
-We pretend unsorted model is doing it in tasks so we can compare it
+We pretend sorted model is doing it in tasks so we can compare it
 to the models who are using tasks
 """
 
@@ -38,12 +39,14 @@ for task_count in task_counts_to_compare_to:
         model = model_util.load(model_to_load, filepath)
 
         #To prevent any possible corruption between cycles, just reload and
-        #reprocess the data
+        #reprocess the data, including resorting
         data, classes = emnist.get(balanced_set, amount=1000)
         x, y, val_x, val_y = data_util.validation_split(data['x'], data['y'], validation_split)
+        x, y = emnist.mean_sort(x, y, classes, 5)
 
         #Convert data to be used in model
         x, y = data_util.prep(x, y, classes)
+
         val_x, val_y = data_util.prep(val_x, val_y, classes)
         test_x, test_y = data_util.prep(data['test_x'], data['test_y'], classes)
 
@@ -84,7 +87,7 @@ for task_count in task_counts_to_compare_to:
                 results.append(result_point)
 
         #We have finished training this model, save the results
-        name = "id{0}_t{1}_unsorted".format(model_id, task_count)
+        name = "id{0}_t{1}_sorted".format(model_id, task_count)
         model_results = {
             "name" : name,
             "id" : model_id,
