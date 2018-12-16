@@ -1,0 +1,207 @@
+{
+    "name": "id1_t5_unsorted",
+    "id": 1,
+    "task_count": 5,
+    "results": [
+        {
+            "samples_seens": 159,
+            "categorial_accuracy": 0.02700000001490116,
+            "top_2_accuracy": 0.05700000011920929,
+            "loss": 3.8374817390441893,
+            "epoch": 0,
+            "task": 0
+        },
+        {
+            "samples_seens": 318,
+            "categorial_accuracy": 0.04900000008940697,
+            "top_2_accuracy": 0.07200000002980232,
+            "loss": 3.819113525390625,
+            "epoch": 0,
+            "task": 1
+        },
+        {
+            "samples_seens": 477,
+            "categorial_accuracy": 0.037000000149011614,
+            "top_2_accuracy": 0.09900000011920929,
+            "loss": 3.802762321472168,
+            "epoch": 0,
+            "task": 2
+        },
+        {
+            "samples_seens": 636,
+            "categorial_accuracy": 0.05600000008940697,
+            "top_2_accuracy": 0.08400000002980232,
+            "loss": 3.7888590393066406,
+            "epoch": 0,
+            "task": 3
+        },
+        {
+            "samples_seens": 795,
+            "categorial_accuracy": 0.095,
+            "top_2_accuracy": 0.15699999952316285,
+            "loss": 3.7753360500335695,
+            "epoch": 0,
+            "task": 4
+        },
+        {
+            "samples_seens": 954,
+            "categorial_accuracy": 0.04800000002980232,
+            "top_2_accuracy": 0.11700000011920929,
+            "loss": 3.7604195251464843,
+            "epoch": 1,
+            "task": 0
+        },
+        {
+            "samples_seens": 1113,
+            "categorial_accuracy": 0.12200000005960464,
+            "top_2_accuracy": 0.18800000059604643,
+            "loss": 3.688103454589844,
+            "epoch": 1,
+            "task": 1
+        },
+        {
+            "samples_seens": 1272,
+            "categorial_accuracy": 0.14800000059604645,
+            "top_2_accuracy": 0.23000000071525573,
+            "loss": 3.64525612449646,
+            "epoch": 1,
+            "task": 2
+        },
+        {
+            "samples_seens": 1431,
+            "categorial_accuracy": 0.05500000014901161,
+            "top_2_accuracy": 0.12800000005960466,
+            "loss": 3.679588752746582,
+            "epoch": 1,
+            "task": 3
+        },
+        {
+            "samples_seens": 1590,
+            "categorial_accuracy": 0.11600000047683716,
+            "top_2_accuracy": 0.23499999904632568,
+            "loss": 3.5560609970092774,
+            "epoch": 1,
+            "task": 4
+        },
+        {
+            "samples_seens": 1749,
+            "categorial_accuracy": 0.18099999976158143,
+            "top_2_accuracy": 0.29900000071525573,
+            "loss": 3.4205575981140135,
+            "epoch": 2,
+            "task": 0
+        },
+        {
+            "samples_seens": 1908,
+            "categorial_accuracy": 0.15500000071525574,
+            "top_2_accuracy": 0.247,
+            "loss": 3.3987688980102537,
+            "epoch": 2,
+            "task": 1
+        },
+        {
+            "samples_seens": 2067,
+            "categorial_accuracy": 0.12800000011920928,
+            "top_2_accuracy": 0.20900000023841858,
+            "loss": 3.433088104248047,
+            "epoch": 2,
+            "task": 2
+        },
+        {
+            "samples_seens": 2226,
+            "categorial_accuracy": 0.18300000059604646,
+            "top_2_accuracy": 0.27999999904632566,
+            "loss": 3.228828977584839,
+            "epoch": 2,
+            "task": 3
+        },
+        {
+            "samples_seens": 2385,
+            "categorial_accuracy": 0.19799999928474427,
+            "top_2_accuracy": 0.3110000011920929,
+            "loss": 3.152747917175293,
+            "epoch": 2,
+            "task": 4
+        },
+        {
+            "samples_seens": 2544,
+            "categorial_accuracy": 0.21600000047683715,
+            "top_2_accuracy": 0.3230000014305115,
+            "loss": 3.1492174491882325,
+            "epoch": 3,
+            "task": 0
+        },
+        {
+            "samples_seens": 2703,
+            "categorial_accuracy": 0.2759999992847443,
+            "top_2_accuracy": 0.40899999856948854,
+            "loss": 3.111132438659668,
+            "epoch": 3,
+            "task": 1
+        },
+        {
+            "samples_seens": 2862,
+            "categorial_accuracy": 0.22099999940395354,
+            "top_2_accuracy": 0.3429999988079071,
+            "loss": 3.049071584701538,
+            "epoch": 3,
+            "task": 2
+        },
+        {
+            "samples_seens": 3021,
+            "categorial_accuracy": 0.20399999964237214,
+            "top_2_accuracy": 0.3199999988079071,
+            "loss": 3.0804065647125243,
+            "epoch": 3,
+            "task": 3
+        },
+        {
+            "samples_seens": 3180,
+            "categorial_accuracy": 0.3030000011920929,
+            "top_2_accuracy": 0.4610000011920929,
+            "loss": 2.990106483459473,
+            "epoch": 3,
+            "task": 4
+        },
+        {
+            "samples_seens": 3339,
+            "categorial_accuracy": 0.2739999992847443,
+            "top_2_accuracy": 0.39499999856948853,
+            "loss": 2.79022008895874,
+            "epoch": 4,
+            "task": 0
+        },
+        {
+            "samples_seens": 3498,
+            "categorial_accuracy": 0.3330000002384186,
+            "top_2_accuracy": 0.4820000002384186,
+            "loss": 2.680833311080933,
+            "epoch": 4,
+            "task": 1
+        },
+        {
+            "samples_seens": 3657,
+            "categorial_accuracy": 0.27200000071525576,
+            "top_2_accuracy": 0.40400000143051146,
+            "loss": 2.7788671512603758,
+            "epoch": 4,
+            "task": 2
+        },
+        {
+            "samples_seens": 3816,
+            "categorial_accuracy": 0.32499999952316283,
+            "top_2_accuracy": 0.46499999952316284,
+            "loss": 2.654203248977661,
+            "epoch": 4,
+            "task": 3
+        },
+        {
+            "samples_seens": 3975,
+            "categorial_accuracy": 0.30899999976158143,
+            "top_2_accuracy": 0.4509999997615814,
+            "loss": 2.7239796981811524,
+            "epoch": 4,
+            "task": 4
+        }
+    ]
+}
