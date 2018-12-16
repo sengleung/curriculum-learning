@@ -13,7 +13,7 @@ model_configs = []
 with open('./models/configurations.json', 'r') as fp:
     model_configs = json.load(fp)
 
-epochs = 5
+epochs = 3
 batch_size = 128
 balanced_set = emnist.sets['balanced']
 validation_split = 0.2
@@ -44,7 +44,7 @@ for model_config in model_configs:
 
     #To prevent any possible corruption between cycles, just reload and
     #reprocess the data, including resorting
-    data, classes = emnist.get(balanced_set, amount=1000)
+    data, classes = emnist.get(balanced_set)
     x, y, val_x, val_y = data_util.validation_split(data['x'], data['y'], validation_split)
     x, y = emnist.mean_sort(x, y, classes, task_count)
 

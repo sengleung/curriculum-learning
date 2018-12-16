@@ -12,10 +12,10 @@ We pretend sorted model is doing it in tasks so we can compare it
 to the models who are using tasks
 """
 
-epochs = 5
+epochs = 3
 batch_size = 128
-model_ids = [0, 1, 2]
-task_counts_to_compare_to = [5, 10, 20, 100]
+model_ids = [0]
+task_counts_to_compare_to = [5, 10, 25]
 balanced_set = emnist.sets['balanced']
 validation_split = 0.2
 
@@ -40,7 +40,7 @@ for task_count in task_counts_to_compare_to:
 
         #To prevent any possible corruption between cycles, just reload and
         #reprocess the data, including resorting
-        data, classes = emnist.get(balanced_set, amount=1000)
+        data, classes = emnist.get(balanced_set)
         x, y, val_x, val_y = data_util.validation_split(data['x'], data['y'], validation_split)
         x, y = emnist.mean_sort(x, y, classes, task_count)
 
