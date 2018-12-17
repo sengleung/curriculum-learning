@@ -26,14 +26,23 @@ top_2_accuracy_index = 2
 
 filepath = './models/untrained'
 
+#Used for estimating completion percent
+total = float(len(model_configs))
+current = 0.0
+
 #For every configuration
 for model_config in model_configs:
+
+    #Used for estimating completion percent
+    current += 1.0
+    percent = current/total
+
     name = model_config['name']
     model_id = model_config['id']
     task_count = model_config['task_count']
     distribution = model_config['distribution']
 
-    print("\nmodel:\t" + name)
+    print("\nmodel:\t" + name + "\t Complete: " + str(percent) + "%")
 
     results = []
     samples_seen = 0
@@ -65,7 +74,7 @@ for model_config in model_configs:
         #Get our next task and prep it
         x, y = syllabus.next()
         x, y = data_util.prep(x, y, classes)
-        #print("epoch : {0}\ttask: {1}".format(syllabus.current_epoch, syllabus.current_task_index))
+        print("epoch : {0}\ttask: {1}".format(syllabus.current_epoch, syllabus.current_task_index))
 
         model.fit(
             x=x,

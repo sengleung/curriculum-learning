@@ -1,5 +1,6 @@
 import keras
 import json
+import sys
 import numpy as np
 import util.emnist as emnist
 import util.data as data_util
@@ -10,11 +11,17 @@ import results.results as results_util
 We pretend unsorted model is doing it in tasks so we can compare it
 to the models who are using tasks
 """
+id = sys.argv[1]
+task_amount = sys.argv[2]
+print("Running model " + id + " with a split of " + task_amount + " tasks")
+
+model_ids = []
+task_counts_to_compare_to = []
+model_ids.append(int(id))
+task_counts_to_compare_to.append(int(task_amount))
 
 epochs = 3
 batch_size = 128
-model_ids = [0]
-task_counts_to_compare_to = [5, 10, 25]
 balanced_set = emnist.sets['balanced']
 validation_split = 0.2
 
