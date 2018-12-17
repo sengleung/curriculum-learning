@@ -4,7 +4,6 @@ import numpy as np
 import util.emnist as emnist
 import util.data as data_util
 import util.model as model_util
-import util.plot as plot_util
 import results.results as results_util
 
 """
