@@ -4,7 +4,6 @@ import numpy as np
 import util.emnist as emnist
 import util.data as data_util
 import util.model as model_util
-import util.plot as plot_util
 import results.results as results_util
 
 """
@@ -12,8 +11,8 @@ We pretend sorted model is doing it in tasks so we can compare it
 to the models who are using tasks
 """
 
-model_ids = [0 1 2]
-task_counts_to_compare_to = [5 10 25]
+model_ids = [0, 1, 2]
+task_counts_to_compare_to = [5, 10, 25]
 
 epochs = 3
 batch_size = 128

@@ -10,8 +10,8 @@ import results.results as results_util
 We pretend unsorted model is doing it in tasks so we can compare it
 to the models who are using tasks
 """
-model_ids = [0 1 2]
-task_counts_to_compare_to = [5 10 25]
+model_ids = [0, 1, 2]
+task_counts_to_compare_to = [5, 10, 25]
 
 epochs = 3
 batch_size = 128
