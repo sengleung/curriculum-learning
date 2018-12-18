@@ -93,10 +93,5 @@ for i in range(0,18):
 	# load model
 	model = load_model('./trained/model'+str(i)+'.h5')
 
-	# test training sequences
-	#print('train')
-	#evaluate_model(model, y_tokenizer, trainX, sorted_training_pairs)
-
-	# test test sequences
 	print('TEST - MODEL '+str(i))
 	evaluate_model(model, y_tokenizer, testX, test_pairs)

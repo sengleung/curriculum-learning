@@ -10,8 +10,8 @@ from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 from keras.layers import Dense
 from keras.callbacks import ModelCheckpoint
-from organise_data import get_data, split_data, sort_data, create_tokenizer, max_length, encode_sequences, encode_output
-from clean_data import save_clean_data
+from organise_data import create_tokenizer, max_length, encode_sequences, encode_output
+from clean_data import load_clean_sentences
 from pickle import load
 import random
 
@@ -27,14 +27,10 @@ def define_model(src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units):
 	return model
 
 ### <---- MAIN ---->####
-clean_french, clean_english, clean_pairs = get_data()
-test_pairs, training_pairs = split_data(clean_french, clean_english)
-validation_set, training_pairs = split_data(training_pairs[:,0], training_pairs[:,1])
-sorted_training_pairs = sort_data(training_pairs)
-save_clean_data(clean_pairs, 'data/allpairs.pkl')
-save_clean_data(test_pairs, 'data/testpairs.pkl')
-save_clean_data(sorted_training_pairs, 'data/trainingpairs.pkl')
-save_clean_data(validation_set, 'data/validationpairs.pkl')
+all_pairs = load_clean_sentences('data/allpairs.pkl')
+test_pairs = load_clean_sentences('data/testpairs.pkl')
+sorted_training_pairs = load_clean_sentences('data/trainingpairs.pkl')
+validation_set = load_clean_sentences('data/validationpairs.pkl')
 
 clean_x = clean_french
 clean_y = clean_english
@@ -46,12 +42,14 @@ test_x = test_pairs[:,0]
 test_y = test_pairs[:,1]
 
 ## PREP MODEL TOKENIZER
-
+print("Training Baseline Model\n\n")
+print("Training Dataset= ", sorted_training_pairs.shape)
+print("Validation Dataset= ", validation_set.shape)
 # prep english tokeniser
 x_tokenizer = create_tokenizer(clean_x)
 x_vocab_size = len(x_tokenizer.word_index) +1
 x_length = max_length(clean_x)
-print('English Vocabulary Size: %d' % x_vocab_size)
+print('\n\nEnglish Vocabulary Size: %d' % x_vocab_size)
 print('English Max Length: %d' % (x_length))
 # prep french tokeniser
 y_tokenizer = create_tokenizer(clean_y)
@@ -59,6 +57,7 @@ y_vocab_size = len(y_tokenizer.word_index) +1
 y_length = max_length(clean_y)
 print('French Vocabulary Size: %d' % y_vocab_size)
 print('French Max Length: %d' % (y_length))
+print("\n\n")
 
 ## PREP TRAINING DATA
 
@@ -72,18 +71,14 @@ validationY = encode_sequences(y_tokenizer, y_length, validation_y)
 validationY = encode_output(validationY, y_vocab_size)
 
 ## DEFINE MODEL
+model = load_model("./untrained/model_0.h5")
 
-# define model
-model = define_model(x_vocab_size, y_vocab_size, x_length, y_length, 256)
-model.compile(optimizer='adam', loss='categorical_crossentropy')
-# summarize defined model
-print(model.summary())
-plot_model(model, to_file='model.png', show_shapes=True)
+#print(model.summary())
+plot_model(model, to_file='baseline_model.png', show_shapes=True)
 
 ## TRAIN MODEL
-
 # fit model - 30 epochs, batch_size of 64 examples
-filename = 'model.h5'
-
+filename = './trained/baseline_model.h5'
+#
 checkpoint = ModelCheckpoint(filename, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 model.fit(trainX, trainY, epochs=30, batch_size=64, validation_data=(validationX, validationY), callbacks=[checkpoint], verbose=2)

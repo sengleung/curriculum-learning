@@ -86,13 +86,17 @@ for model_config in model_configs:
 	test_x = test_pairs[:,0]
 	test_y = test_pairs[:,1]
 
+
+	print("\n\nTraining Model " + str(i) + "\n\n")
+	print("Training Dataset= ", sorted_training_pairs.shape)
+	print("Validation Dataset= ", validation_set.shape)
     ## PREP MODEL TOKENIZER
 
     # prep english tokeniser
 	x_tokenizer = create_tokenizer(clean_x)
 	x_vocab_size = len(x_tokenizer.word_index) +1
 	x_length = max_length(clean_x)
-	print('English Vocabulary Size: %d' % x_vocab_size)
+	print('\n\nEnglish Vocabulary Size: %d' % x_vocab_size)
 	print('English Max Length: %d' % (x_length))
 	# prep french tokeniser
 	y_tokenizer = create_tokenizer(clean_y)
@@ -100,6 +104,7 @@ for model_config in model_configs:
 	y_length = max_length(clean_y)
 	print('French Vocabulary Size: %d' % y_vocab_size)
 	print('French Max Length: %d' % (y_length))
+	print("\n\n")
 
 	## PREP TRAINING DATA
 

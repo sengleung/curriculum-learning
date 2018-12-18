@@ -35,22 +35,10 @@ def get_data():
 	clean_french = load_clean_sentences('data/clean_french.pkl')
 	clean_pairs = np.column_stack((clean_french,clean_english))
 	### local test
-	clean_english = clean_english[:10000]
-	clean_french = clean_french[:10000]
-	clean_pairs = clean_pairs[:10000]
+	clean_english = clean_english[:12000]
+	clean_french = clean_french[:12000]
+	clean_pairs = clean_pairs[:12000]
 	return clean_french, clean_english, clean_pairs
-
-def get_new_test():
-    clean_english = load_clean_sentences('data/clean_english.pkl')
-    clean_french = load_clean_sentences('data/clean_french.pkl')
-    clean_pairs = np.column_stack((clean_french,clean_english))
-    ### local test
-    new_all_pairs = clean_pairs[10000:11000]
-    clean_english = clean_english[10000:11000]
-    clean_french = clean_french[10000:11000]
-
-    test_pairs, training_pairs = split_data(clean_french, clean_english)
-    return test_pairs, new_all_pairs
 
 
 ## split dataset into test and training data
@@ -58,7 +46,7 @@ def split_data(x, y):
 	clean_pairs = np.column_stack((x, y))
 	temp_cp = clean_pairs
 	## Divide data into test and sample data
-	test_pairs, training_pairs = sample(temp_cp, 0.1, True)
+	test_pairs, training_pairs = sample(temp_cp, 0.083, True)
 	print("Test sample = ", test_pairs.shape, "pairs")
 	print("Training sample = ", training_pairs.shape, "pairs")
 	return test_pairs, training_pairs
