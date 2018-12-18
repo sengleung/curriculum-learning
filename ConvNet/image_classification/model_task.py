@@ -34,12 +34,6 @@ current = 0.0
 #For every configuration
 for model_config in model_configs:
 
-    exists = os.path.isfile('/path/to/file')
-    if exists:
-        # Store configuration file values
-    else:
-        # Keep presets
-
     #Used for estimating completion percent
     current += 1.0
     percent = current/total
