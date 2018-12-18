@@ -3,10 +3,8 @@ import numpy as np
 from model_trainer import ModelTrainer
 from WeightedTaskSyllabus import WeightedTaskSyllabus
 from prep_model import get_model
-from organise_data import get_data, sort_data, split_data
+from organise_data import get_data, sort_data, split_data, load_clean_sentences
 from encode_data import language_translation_encode_data
-from eval_model import eval_model
-#Consts
 
 task_count = 10
 difficulty_sections = 15
@@ -15,16 +13,20 @@ weight_file = "init_weights0.h5"
 
 #Loading model and data
 model = get_model(weight_file)
-x, y, all_pairs = get_data()
-test_pairs, training_pairs = split_data(x, y)
+print("Training model - French to English")
+all_pairs = load_clean_sentences('allpairs.pkl')
+test_pairs = load_clean_sentences('testpairs.pkl')
+training_pairs = load_clean_sentences('trainingpairs.pkl')
+
 # print("tp[0] = ", training_pairs[:,0])
 # print("tp[1] =", training_pairs[:,1])
+
 
 #Setting up a syllabus
 syl = WeightedTaskSyllabus(
     data=(training_pairs[:,0], training_pairs[:,1]),
     weightings=weightings,
-    validation_split=0.01,
+    validation_split=0.1,
     difficulty_sorter=sort_data,
     task_count=task_count,
     pre_run=False
@@ -43,9 +45,4 @@ trainer.on_task_start(preprocess_data)
 trainer.train()
 
 print("model saved")
-trainer.model.save("./models/trained_model")
-#evaluate
-# evaluation_score = model.evaluate(data_collection['test_x'], data_collection['test_y'], verbose=1)
-# print(evaluation_score)
-print(all_pairs.shape)
-#eval_model(test_pairs, training_pairs, all_pairs)
+trainer.model.save("./models/trained_model.h5")

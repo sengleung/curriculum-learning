@@ -6,7 +6,7 @@ class WeightedTaskSyllabus:
     """Trains a model 1 task at a time"""
 
     def __init__(self, data, weightings, difficulty_sorter, task_count,
-        batch_size=128,
+        batch_size=64,
         validation_split=0.2,
         validation_data=None,
         pre_run=False,
@@ -15,7 +15,7 @@ class WeightedTaskSyllabus:
         data: tuple -> (x,y)
             the data to train on
         weightings: dict -> {'bw': _ , 'cw' : _ , 'fw' : _ }
-            The waits with which to create tasks from
+            The weights with which to create tasks from
         difficulty_sorter: func(x,y) -> return [(x,y) , (x,y) , ... ]
             Given a list of data and its labels, return a list of tuples in
             order of difficulty
@@ -45,6 +45,7 @@ class WeightedTaskSyllabus:
             data['train_x'] = data[0]
             data['train_y'] = data[1]
         else:
+            #print("DATA=", data)
             self.data = self._validation_split(data, validation_split)
 
         self.tasks = self._create_tasks(
@@ -99,7 +100,10 @@ class WeightedTaskSyllabus:
         labelled_data = list(zip(data[0], data[1]))
         random.shuffle(labelled_data)
         training_data, validation_data = split(labelled_data, (1-validation_split))
+        # print("LABELLED=", training_data)
+        # print("LABELLED SIZE=", len(training_data))
         split_data['train_x'], split_data['train_y'] = unzip(training_data)
+        #print("VD===", validation_data)
         split_data['validation_x'], split_data['validation_y'] = unzip(validation_data)
         return split_data
 
