@@ -46,7 +46,9 @@ for model_config in model_configs:
     print("\nmodel:\t" + name + "\t Complete: " + str(percent) + "%")
 
     #added in to allow resuming if canceled halfway through
-    exists = os.path.isfile('/results/data/'+name+".json")
+    file_to_check = "./results/data/" +name+".json"
+    print(file_to_check)
+    exists = os.path.isfile(file_to_check)
     if exists:
         print("Alread completed")
     else:
