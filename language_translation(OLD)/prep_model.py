@@ -14,18 +14,13 @@ from keras.layers import TimeDistributed
 from keras.layers import Dense
 from keras.callbacks import ModelCheckpoint
 from pickle import load
-from organise_data import get_data
+from organise_data import get_data, split_data
+from encode_data import create_tokenizer, max_length
+from pickle import dump
 
-# fit a tokenizer
-# map words to integers (needed for modelling)
-def create_tokenizer(lines):
-	tokenizer = Tokenizer()
-	tokenizer.fit_on_texts(lines)
-	return tokenizer
-
-# max sentence length
-def max_length(lines):
-	return max(len(line.split()) for line in lines)
+def save_clean_data(sentences, filename):
+	dump(sentences, open(filename, 'wb'))
+	print('Saved: %s' % filename)
 
 # define NMT model
 def define_model(src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units):
@@ -40,20 +35,24 @@ def define_model(src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units):
 
 ### <---- main function ---->####
 def get_model(weight_id):
-	clean_x, clean_y, all_pairs = get_data()
+	x, y, all_pairs = get_data()
+	print("Prepping model - French to English")
+	test_pairs, training_pairs = split_data(x, y)
+	save_clean_data(all_pairs, 'allpairs.pkl')
+	save_clean_data(test_pairs, 'testpairs.pkl')
+	save_clean_data(training_pairs, 'trainingpairs.pkl')
 
-	## PREP MODEL TOKENIZER
 
+	clean_x = x
+	clean_y = y
 	# prep english tokeniser
 	x_tokenizer = create_tokenizer(clean_x)
 	x_vocab_size = len(x_tokenizer.word_index) +1
 	x_length = max_length(clean_x)
-	print("French length=", x_length)
 	# prep french tokeniser
 	y_tokenizer = create_tokenizer(clean_y)
 	y_vocab_size = len(y_tokenizer.word_index) +1
 	y_length = max_length(clean_y)
-	print("English length=", y_length)
 	## DEFINE MODEL
 
 	# define model

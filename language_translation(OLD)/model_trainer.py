@@ -1,4 +1,7 @@
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from keras.callbacks import ModelCheckpoint
 
 class ModelTrainer:
     """
@@ -49,7 +52,7 @@ class ModelTrainer:
         self.verbose_level = verbose_level
         self._on_task_start = on_task_start
         self._on_task_complete = on_task_complete
-
+        self.checkpoint = ModelCheckpoint('models/tained_model.h5', monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 
     def train(self):
         """Trains the model according to the syllabus set"""
@@ -68,10 +71,11 @@ class ModelTrainer:
                 x=data['x'],
                 y=data['y'],
                 epochs=1,
-                verbose=self.verbose_level,
+                verbose=self.verbose_level+1,
                 batch_size=self.syllabus.batch_size(),
                 shuffle=False,
-                validation_data=(data['val_x'], data['val_y'])
+                validation_data=(data['val_x'], data['val_y']),
+                callbacks=[self.checkpoint]
             )
 
             if self._on_task_complete: #If on_task_complete callback is set

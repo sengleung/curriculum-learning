@@ -14,7 +14,7 @@ Weights will be saved to /model_weights/weights
 --Initialise and train model
 This will be call a lot of functions before running the model on given data for a set number of epochs and
 batchsizes, under a certain syllabus.
-Model will be saved for evaluation in /models
+Model will be saved for evaluation in models
 The various functions used work as so:
 
 encode_data.py
